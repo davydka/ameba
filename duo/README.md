@@ -8,6 +8,7 @@ Example of server-side and client-side duotone effect on image files using html-
 * Clone the repo: `https://github.com/davydka/ameba.git`
 * Enter the `duo` directory in the repo: `cd ameba/duo`
 * Install dependencies: `npm install`
+* `webpack --watch js/browser.js bundle/js/browser.js` for client-side dev.
 
 ##Usage
 Include the file [duo.js](https://github.com/davydka/ameba/blob/master/duo/js/duo.js).
