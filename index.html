@@ -1,0 +1,126 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset='utf-8'>
+	<title>linear interpolation effect with gain/wrap</title>
+	<meta name='viewport' content='width=device-width, initial-scale=1'>
+	<style>
+		html, body{
+			margin: 0;
+			padding:0;
+		}
+		.img {
+			display:none;
+		}
+		#range {
+			position: fixed;
+			top: 10px;
+			right:10px;
+			width: 500px;
+			display:none;
+		}
+	</style>
+</head>
+<body>
+	<div id='container'>
+		<canvas id='canvas'></canvas>
+		<input
+			type='range'
+			id='range'
+			value='1.01'
+			min='1.01'
+			max='2.0'
+			step='.01'
+		/>
+	</div>
+	<img class='img' src='img.jpg' />
+<script>
+	var canvas = document.getElementById('canvas');
+	var ctx = canvas.getContext('2d');
+	var img = document.querySelector('.img');
+	var imgData = null;
+	var data = null;
+	var gainFactor = 1.01;
+	var newGain = 1.01;
+	var range = document.getElementById('range');
+	var pause = false;
+
+	if(location.search != ''){
+		searchGain = location.search.substring(1);
+		if(!isNaN(searchGain)){
+			gainFactor=parseFloat(searchGain);
+			//if(gainFactor > range.max){
+				range.setAttribute('max', gainFactor+2.0);
+			//}
+			range.value = gainFactor;
+			console.log(gainFactor);
+		}
+	}
+
+	range.addEventListener('input', function() {
+		//pause = true;
+		newGain=parseFloat(range.value);
+		console.log(gainFactor);
+	}, true);
+
+	canvas.onclick = function(e){
+		var pixel = ctx.getImageData(e.clientX, e.clientY, 1, 1).data;
+		console.log(pixel);
+		//step();
+		//pause = !pause;
+	}
+	
+	img.onload = function(){
+		canvas.height = img.height;
+		canvas.width = img.width;
+		ctx.drawImage(img,0,0)
+		imgData = ctx.getImageData(0,0,canvas.width,canvas.height);
+		data = imgData.data;
+	
+		step();
+	}
+
+	var step = function(){
+		if(!pause){
+			for(var i=0; i<data.length; i+=4) {
+				var red = data[i];
+				var green = data[i+1];
+				var blue = data[i+2];
+				var alpha = data[i+3];
+
+				red = gain(red);
+				green = gain(green);
+				blue = gain(blue);
+
+				data[i] = red;
+				data[i+1] = green;
+				data[i+2] = blue;
+				data[i+3] = alpha;
+			}
+			if(newGain != gainFactor){
+				gainFactor = newGain;
+			}
+			ctx.clearRect(0, 0, canvas.width, canvas.height);
+			ctx.putImageData(imgData, 0, 0);
+		}
+		requestAnimationFrame(step);
+	}
+
+	var gain = function(number){
+		var newNumber = number * gainFactor;
+		if(Math.round(newNumber) == number){
+			newNumber = newNumber+3;
+		}
+		if(newNumber >= 255){
+			newNumber = newNumber - 254;
+		
+		}
+		if(newNumber == 0){
+			newNumber = 1;
+		}
+		return newNumber;
+	}
+
+</script>
+</body>
+</html>

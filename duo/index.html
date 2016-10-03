@@ -1,0 +1,66 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset='utf-8'>
+	<title>duotone in 2d canvas</title>
+	<meta name='viewport' content='width=device-width, initial-scale=1'>
+	<style>
+		html, body{
+			margin: 0;
+			padding:0;
+		}
+		.img {
+			/*width: 100%;*/
+		}
+	</style>
+</head>
+<body>
+	<img class='img' src='assets/bw1.jpg' data-tone1='4745D1' data-tone2='FFBCAA' />
+	<img class='img' src='assets/bw2.jpg' data-tone1='2C185B' data-tone2='FF6B68' />
+	<img class='img' src='assets/bw3.jpg' data-tone1='FF294C' data-tone2='AFFFCC' />
+
+	<img class='img' src='assets/bw1.jpg' data-tone1='04284A' data-tone2='AFFFCC' />
+	<img class='img' src='assets/bw2.jpg' data-tone1='183F63' data-tone2='FB6754' />
+	<img class='img' src='assets/bw3.jpg' data-tone1='F12D14' data-tone2='000000' />
+
+	<img class='img' src='assets/bw1.jpg' data-tone1='AFFFCC' data-tone2='FB6754' />
+	<img class='img' src='assets/bw2.jpg' data-tone1='04284A' data-tone2='CE2C36' />
+	<img class='img' src='assets/bw3.jpg' data-tone1='7D3C9E' data-tone2='FB6754' />
+
+	<img class='img' src='assets/bw1.jpg' data-tone1='4745D1' data-tone2='FFE600' />
+	<img class='img' src='assets/bw2.jpg' data-tone1='68268C' data-tone2='FBD200' />
+	<img class='img' src='assets/bw3.jpg' data-tone1='000000' data-tone2='FFFFFF' />
+<script src='stats.min.js'></script>
+<script src='js/browser.js'></script>
+<script>
+var stats = new Stats();
+stats.showPanel( 0 ); // 0: fps, 1: ms, 2: mb, 3+: custom
+stats.domElement.style.top = 'auto';
+stats.domElement.style.left = 'auto';
+stats.domElement.style.right = '0px';
+stats.domElement.style.bottom = '0px';
+document.body.appendChild( stats.dom );
+var prevTime = performance.now();
+var frames =  60;
+function animate() {
+	stats.begin();
+
+	frames++;
+	var time = performance.now();
+	if ( time > prevTime + 1000 ) {
+		var fps = ( frames * 1000 ) / ( time - prevTime );
+		fps = Math.round(fps);
+		if(fps < 30){
+			console.error('###', fps);
+		}
+		this.prevTime = time;
+		this.frames = 0;
+	}
+
+	stats.end();
+	requestAnimationFrame( animate );
+}
+requestAnimationFrame( animate );
+</script>
+</body>
+</html>

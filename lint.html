@@ -1,0 +1,174 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset='utf-8'>
+	<title>linear interpolation effect with gain/wrap</title>
+	<meta name='viewport' content='width=device-width, initial-scale=1'>
+	<style>
+		html, body{
+			margin: 0;
+			padding:0;
+		}
+		.img {
+			display:none;
+		}
+		#range {
+			position: fixed;
+			top: 10px;
+			right:10px;
+			width: 500px;
+			display:none;
+		}
+	</style>
+</head>
+<body>
+	<div id='container'>
+		<canvas id='canvas'></canvas>
+		<input
+			type='range'
+			id='range'
+			value='1.01'
+			min='1.01'
+			max='2.0'
+			step='.01'
+		/>
+	</div>
+	<img class='img' src='img.jpg' />
+<script>
+	var canvas = document.getElementById('canvas');
+	var ctx = canvas.getContext('2d');
+	var img = document.querySelector('.img');
+	var imgData = null;
+	var data = null;
+	var search = null;
+	var range = document.getElementById('range');
+
+	if(location.search != ''){
+		search = location.search.substring(1);
+		if(!isNaN(search)){
+			console.log(search);
+		}
+	}
+
+	range.addEventListener('input', function() {
+		console.log(parseFloat(range.value));
+	}, true);
+
+	canvas.onclick = function(e){
+		var pixel = ctx.getImageData(e.clientX, e.clientY, 1, 1).data;
+		console.log(pixel);
+	}
+	
+	img.onload = function(){
+		canvas.height = img.height;
+		canvas.width = img.width;
+		ctx.drawImage(img,0,0)
+		imgData = ctx.getImageData(0,0,canvas.width,canvas.height);
+		data = imgData.data;
+		var xScale = 4;
+		var yScale = 1;
+	
+		var newData = resizeNearestNeighbor(imgData, 3900, 1920);
+		ctx.clearRect(0, 0, canvas.width, canvas.height);
+		//canvas.width = 200;
+		//canvas.height = 400;
+		ctx.putImageData(newData, 0, 0);
+		/*
+		//for (var x = 0; x < canvas.width; x=x+(xScale)) {
+		for (var x = 0; x < canvas.width; ++x) {
+			for (var y = 0; y < canvas.height; ++y) {
+				var i = (y*canvas.width + x)*4;
+				var red = data[i];
+				//var red2 = 0;
+				//var red2 = data[i+(4 * (xScale - 1))];
+				var red2 = data[i+4];
+				var green = data[i+1];
+				var blue = data[i+2];
+				var alpha = data[i+3];
+
+				//red = lint(red, red2, xScale);
+				//green = lint(green);
+				//blue = lint(blue);
+				
+				data[i] = red;
+				data[i+1] = green;
+				data[i+2] = blue;
+				data[i+3] = alpha;
+			}
+		}
+		ctx.clearRect(0, 0, canvas.width, canvas.height);
+		ctx.putImageData(imgData, 0, 0);
+		*/
+	}
+
+	var lint = function(a, b, f) {
+		//return a;
+		return a + f * (b - a);
+	}
+
+	resizeNearestNeighbor = function (srcImageData, width, height) {
+		var srcPixels    = srcImageData.data,
+		srcWidth     = srcImageData.width,
+		srcHeight    = srcImageData.height,
+		srcLength    = srcPixels.length,
+		dstImageData = this.utils.createImageData(width, height),
+		dstPixels    = dstImageData.data;
+
+		var xFactor = srcWidth / width,
+		yFactor = srcHeight / height,
+		dstIndex = 0, srcIndex,
+		x, y, offset;
+
+		for (y = 0; y < height; y += 1) {
+			offset = ((y * yFactor) | 0) * srcWidth;
+
+			for (x = 0; x < width; x += 1) {
+				srcIndex = (offset + x * xFactor) << 2;
+
+				dstPixels[dstIndex]     = srcPixels[srcIndex];
+				dstPixels[dstIndex + 1] = srcPixels[srcIndex + 1];
+				dstPixels[dstIndex + 2] = srcPixels[srcIndex + 2];
+				dstPixels[dstIndex + 3] = srcPixels[srcIndex + 3];
+				dstIndex += 4;
+			}
+		}
+
+		return dstImageData;
+	};
+
+	var utils = {
+		initSampleCanvas: function () {
+			var _canvas = document.createElement('canvas'),
+			    _context = _canvas.getContext('2d');
+			
+			_canvas.width = 0;
+			_canvas.height = 0;
+			
+			this.getSampleCanvas = function () {
+			    return _canvas;
+			};
+			this.getSampleContext = function () {
+			    return _context;
+			};
+			this.createImageData = (_context.createImageData) ? function (w, h) {
+				return _context.createImageData(w, h);
+			    } : function (w, h) {
+				return new ImageData(w, h);
+			    };
+		    },
+		    getSampleCanvas: function () {
+			this.initSampleCanvas();
+			return this.getSampleCanvas();
+		    },
+		    getSampleContext: function () {
+			this.initSampleCanvas();
+			return this.getSampleContext();
+		},
+		createImageData: function (w, h) {
+			this.initSampleCanvas();
+			return this.createImageData(w, h);
+		}
+	}
+</script>
+</body>
+</html>
