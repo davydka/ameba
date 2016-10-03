@@ -10,6 +10,10 @@ module.exports = {
 		img.imgData = img.ctx.getImageData(0,0,img.canvas.width,img.canvas.height);
 		img.data = img.imgData.data;
 
+		this.grayScale(img);
+		//img.ctx.clearRect(0, 0, img.canvas.width, img.canvas.height);
+		//img.ctx.putImageData(img.imgData, 0, 0);
+
 		var gradient = this.gradientMap(options.tone1, options.tone2);
 		for (var i = 0; i < img.data.length; i += 4) {
 			img.data[i] = gradient[img.data[i]*4];
@@ -21,6 +25,31 @@ module.exports = {
 		img.ctx.putImageData(img.imgData, 0, 0);
 
 		return img.canvas.toDataURL();
+	},
+
+	grayScale: function(img) {
+		var d = img.data;
+		var max = 0;
+		var min = 255;
+		for (var i=0; i < d.length; i+=4) {
+			// Fetch maximum and minimum pixel values
+			if (d[i] > max) { max = d[i]; }
+			if (d[i] < min) { min = d[i]; }
+			// Grayscale by averaging RGB values
+			var r = d[i];
+			var g = d[i+1];
+			var b = d[i+2];
+			var v = 0.3333*r + 0.3333*g + 0.3333*b;
+			d[i] = d[i+1] = d[i+2] = v;
+		}
+		
+		for (var i=0; i < d.length; i+=4) {
+			// Normalize each pixel to scale 0-255
+			var v = (d[i] - min) * 255/(max-min);
+			d[i] = d[i+1] = d[i+2] = v;
+		}
+	
+		return img.data;
 	},
 
 	gradientMap: function (tone1, tone2) {
