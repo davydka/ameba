@@ -14,9 +14,9 @@ Include the file [duo.js](https://github.com/davydka/ameba/blob/master/duo/js/du
 ```
 var Duo = require('./duo');
 var options = {
-▸       tone1: '112233',
-▸       tone2: '445566',
-▸       canvas: new Canvas || document.createElement('canvas');
+	tone1: '112233',
+	tone2: '445566',
+	canvas: new Canvas || document.createElement('canvas');
 }
 var dataUrl = Duo.applyDuotone(img, options);
 console.log(dataUrl);
