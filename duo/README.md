@@ -21,3 +21,5 @@ var options = {
 var dataUrl = Duo.applyDuotone(img, options);
 console.log(dataUrl);
 ```
+
+[Live Example - Client Side](http://107.170.100.207:8091/duo/)
