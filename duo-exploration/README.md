@@ -1,4 +1,4 @@
-# Effects Explorations for The Outline
+# Effects Explorations
 * [duotone](/duo)
 * [duotone video file processing](/video)
 * [ripple](/ripple)
