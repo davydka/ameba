@@ -1,0 +1,14 @@
+{
+  "name": "graphicsmagick",
+  "version": "1.0.0",
+  "description": "[http://www.graphicsmagick.org/](http://www.graphicsmagick.org/)",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "David Whitely",
+  "license": "ISC",
+  "dependencies": {
+    "gm": "1.23.0"
+  }
+}

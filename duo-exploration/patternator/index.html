@@ -1,0 +1,65 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset='utf-8'>
+	<title>ripple</title>
+	<meta name='viewport' content='width=device-width, initial-scale=1'>
+	<style>
+		html, body{
+			margin: 0;
+			padding:0;
+		}
+		#container {
+			height: 10000px;
+		}
+		.img {
+			display:none;
+		}
+	</style>
+</head>
+<body>
+	<div id='container'>
+	</div>
+
+<script src='js/stats.min.js'></script>
+<script src='js/patternator.js'></script>
+<script>
+
+
+
+
+/* Performance Debuging/Monitoring*/
+var stats = new Stats();
+stats.showPanel( 0 ); // 0: fps, 1: ms, 2: mb, 3+: custom
+stats.domElement.style.top = 'auto';
+stats.domElement.style.left = 'auto';
+stats.domElement.style.right = '0px';
+stats.domElement.style.bottom = '0px';
+document.body.appendChild( stats.dom );
+var prevTime = performance.now();
+var frames =  60;
+
+function statsAnimate() {
+	stats.begin();
+
+	frames++;
+	var time = performance.now();
+	if ( time > prevTime + 1000 ) {
+		var fps = ( frames * 1000 ) / ( time - prevTime );
+		fps = Math.round(fps);
+		if(fps < 30){
+			console.error('###', fps);
+		}
+		this.prevTime = time;
+		this.frames = 0;
+	}
+
+	stats.end();
+	requestAnimationFrame( statsAnimate );
+}
+requestAnimationFrame( statsAnimate );
+/* END Performance Debuging/Monitoring*/
+
+</script>
+</body>
+</html>
