@@ -1,7 +1,7 @@
-#GraphicsMagick
+# GraphicsMagick
 [http://www.graphicsmagick.org/](http://www.graphicsmagick.org/)
 
-##Approach
+## Approach
 Using [`recolor`](The last row is required to exist for the purpose of parsing, but is otherwise not used.) you can use the same color matrix transformations instructions used here: [https://jmperezperez.com/duotone-using-fecolormatrix/](https://jmperezperez.com/duotone-using-fecolormatrix/)
 
 ```
@@ -20,8 +20,15 @@ Pink/Purple from Outline-Styleguide.pdf
 
 Color1
 #2C185B
-R: 44 / 255G: 24 / 255B: 91 / 255
-Color2#FF6B68R: 255 / 255G: 107 / 255B: 104 / 255
+R: 44 / 255
+G: 24 / 255
+B: 91 / 255
+
+Color2
+#FF6B68
+R: 255 / 255
+G: 107 / 255
+B: 104 / 255
 
 -0.8274509804 0 0 0 1
 -0.325490196 0 0 0 0.4196078431
@@ -30,7 +37,7 @@ R: 44 / 255G: 24 / 255B: 91 / 255
 0 0 0 0 1
 ```
 
-##CLI
+## CLI
 Notes: [Convert](http://www.graphicsmagick.org/convert.html) creates a new image. [Mogrify](http://www.graphicsmagick.org/mogrify.html) overwrites the same image. [Benchmark](http://www.graphicsmagick.org/benchmark.html) reports execution metrics at the end. `-monitor` shows verbose output.
 
 1. Create a grey gif. `gm benchmark convert -type grayscale gif.gif grey.gif`
