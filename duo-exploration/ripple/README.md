@@ -1,8 +1,6 @@
 # Ripple Effect
 Example of rippling effect on an image that increases as you scroll. Dependant on [pixi.js](http://www.pixijs.com/).
 
-[Live example](http://107.170.100.207:8021/ripple/).
-
 ## Usage
 Include [pixi](https://cdnjs.com/libraries/pixi.js) and the file [ripple.js](js/ripple.js).
 ```javascript
