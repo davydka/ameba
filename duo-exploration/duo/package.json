@@ -13,6 +13,6 @@
   "author": "David Whitely",
   "license": "ISC",
   "dependencies": {
-    "canvas": "1.5.0"
+    "canvas": "2.6.0"
   }
 }
